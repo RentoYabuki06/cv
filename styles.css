@@ -1,74 +1,429 @@
-/* body {
-    font-family: Arial, sans-serif;
+/* グローバル変数 */
+:root {
+    --primary-color: #007acc;
+    --secondary-color: #005fa3;
+    --bg-color: #f4f4f9;
+    --text-color: #333;
+    --card-bg: white;
+    --animation-duration: 0.3s;
+}
+
+/* ダークモードの変数 */
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #ffffff;
+    --card-bg: #2d2d2d;
+}
+
+/* アニメーションキーフレーム */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ベーススタイル */
+body {
+    font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     line-height: 1.6;
-    background-color: #f4f4f4;
-    color: #333;
+    transition: all var(--animation-duration) ease;
 }
 
+/* ヘッダースタイル */
 header {
-    background: #007acc;
-    color: white;
-    padding: 1rem 0;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    padding: 40px 20px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%);
+    background-size: 3em 3em;
+    animation: float 6s ease-in-out infinite;
 }
 
-header p {
-    margin: 0.5rem 0;
+/* カードスタイル */
+.card {
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
+    margin: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform var(--animation-duration) ease;
 }
 
-main {
-    max-width: 800px;
-    margin: 2rem auto;
-    background: white;
-    padding: 1rem 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+.card:hover {
+    transform: translateY(-5px);
 }
 
-section {
-    margin-bottom: 2rem;
+/* スキルセクションのスタイルを更新 */
+.skill-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 30px;
+    padding: 20px;
 }
 
-section h2 {
-    margin-bottom: 1rem;
-    color: #007acc;
+.skill-item {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
+.skill-circle {
+    fill: none;
+    stroke-width: 8;
+    stroke-linecap: round;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    stroke-dasharray: 283;
+    stroke-dashoffset: calc(283 - (283 * var(--value)) / 100);
+    transition: stroke-dashoffset 1s ease-in-out;
 }
 
-ul li {
-    margin-bottom: 1rem;
+.skill-item text {
+    font-size: 14px;
+    font-weight: bold;
+    fill: var(--text-color);
 }
 
-ul li strong {
-    display: block;
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
+/* アニメーション */
+@keyframes skillFill {
+    from {
+        stroke-dashoffset: 283;
+    }
+    to {
+        stroke-dashoffset: calc(283 - (283 * var(--value)) / 100);
+    }
 }
 
-footer {
+.skill-circle {
+    animation: skillFill 1.5s ease-out forwards;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .skill-container {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 20px;
+    }
+}
+
+/* ダークモードトグルボタンのスタイル */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.theme-toggle::before {
+    content: '🌞';
+    position: absolute;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .theme-toggle::before {
+    content: '🌙';
+    transform: rotate(360deg);
+}
+
+.theme-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.theme-toggle:hover::after {
+    opacity: 0.5;
+}
+
+/* アニメーション用のキーフレーム追加 */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+/* Hobby Cards Styling を更新 */
+.hobby-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.hobby-card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 15px;
+    padding: 20px;
     text-align: center;
-    padding: 1rem 0;
-    background: #333;
-    color: white;
-    margin-top: 2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-a {
-    color: #007acc;
+.hobby-icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.hobby-card h3 {
+    margin: 10px 0 5px 0;
+    color: var(--text-color);
+    font-size: 1.1em;
+}
+
+/* Links Styling */
+.links-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.link-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    border-radius: 12px;
+    color: white;
     text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-a:hover {
-    text-decoration: underline;
-} */
+.link-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-svg {
+    width: 100%;
+    height: 100%;
+}
+
+.link-text {
+    font-weight: 500;
+    font-size: 1.1em;
+}
+
+/* Link Card Variants */
+.github {
+    background: #24292e;
+}
+
+.note {
+    background: #43b880;
+}
+
+.mail {
+    background: #007acc;
+}
+
+.link-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* アニメーション */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+
+.hobby-card {
+    animation: float 6s ease-in-out infinite;
+    animation-delay: calc(var(--animation-order) * 0.1s);
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .hobby-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 15px;
+    }
+    
+    .hobby-card {
+        padding: 15px;
+    }
+    
+    .hobby-icon {
+        font-size: 2em;
+    }
+    
+    .hobby-card h3 {
+        font-size: 1em;
+    }
+    
+    .travel-detail {
+        font-size: 0.8em;
+    }
+    
+    .links-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .link-card {
+        justify-content: center;
+    }
+}
+
+.skill-tree {
+    position: relative;
+    padding: 20px;
+}
+
+.skill-branch {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.skill-node {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.skill-node::before {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background: var(--primary-color);
+    height: 20px;
+    top: -20px;
+    left: 50%;
+}
+
+.skill-node:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* Travel Cards Styling を更新 */
+.travel-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
+}
+
+.travel-card {
+    display: flex;
+    align-items: center;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.travel-icon {
+    font-size: 2.5em;
+    margin-right: 20px;
+    padding: 15px;
+    background: rgba(0, 122, 204, 0.1);
+    border-radius: 12px;
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.travel-content {
+    flex: 1;
+}
+
+.travel-content h3 {
+    margin: 0 0 5px 0;
+    color: var(--text-color);
+    font-size: 1.2em;
+}
+
+.travel-detail {
+    font-size: 0.9em;
+    color: var(--text-color);
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* レスポンシブ対応を更新 */
+@media (max-width: 768px) {
+    .travel-card {
+        padding: 15px;
+    }
+
+    .travel-icon {
+        font-size: 2em;
+        padding: 10px;
+        margin-right: 15px;
+        min-width: 30px;
+        height: 30px;
+    }
+
+    .travel-content h3 {
+        font-size: 1.1em;
+    }
+
+    .travel-detail {
+        font-size: 0.8em;
+    }
+}

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rento Yabuki - CV</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
         /* グローバルスタイル */
         body {
@@ -99,9 +100,91 @@
             color: white;
             margin-top: 20px;
         }
+
+        /* アニメーション用のキーフレーム */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* スキル円グラフのアニメーション */
+        @keyframes fillProgress {
+            from { stroke-dashoffset: 100; }
+            to { stroke-dashoffset: var(--value); }
+        }
+
+        /* ダークモードの切り替え用変数 */
+        :root {
+            --bg-color: #f4f4f9;
+            --text-color: #333;
+            --card-bg: white;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+        }
+
+        section {
+            animation: fadeIn 0.6s ease-out;
+            background: var(--card-bg);
+        }
+
+        /* ホバーエフェクト */
+        .hobby-card {
+            transition: transform 0.3s ease;
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* スキルセクション用のスタイル */
+        .skill-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .skill-item {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .skill-circle {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+
+        /* ダークモードトグル */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            cursor: pointer;
+            z-index: 1000;
+        }
     </style>
 </head>
 <body>
+    <!-- ダークモードトグルボタン -->
+    <button class="theme-toggle" aria-label="テーマ切り替え"></button>
+
     <header>
         <img src="photo/profile.jpeg" alt="Profile Photo">
         <h1>Rento Yabuki</h1>
@@ -121,13 +204,13 @@
             <h2>Education</h2>
             <ul class="timeline">
                 <li>
-                    <strong>2024 – Present</strong>: 42Tokyo, Computer Science
+                    <strong>2024 – Present</strong>: Computer Science, 42Tokyo（Master's degree）
                 </li>
                 <li>
-                    <strong>2023 – Present</strong>: Master's in Applied Chemistry, University of Tokyo, Yamaguchi Lab
+                    <strong>2023 – Present</strong>: Applied Chemistry, School of Engineering, University of Tokyo, Yamaguchi Lab（Master's degree）
                 </li>
                 <li>
-                    <strong>2019 – 2023</strong>: Bachelor's in Applied Chemistry, Osaka University, Sakurai Lab
+                    <strong>2019 – 2023</strong>: Applied Chemistry, Faculty of Engineering, Osaka University, Sakurai Lab（Bachelor's degree）
                 </li>
             </ul>
         </section>
@@ -140,78 +223,236 @@
                     <strong>2024 – Present</strong>: Nozomi AI Inc. (Founder)
                 </li>
                 <li>
-                    <strong>2024 – Present</strong>: Matsuo Institute Inc. (AI Engineer Intern)
+                    <strong>2024 – 2025</strong>: Matsuo Institute Inc. (AI Engineer Intern)
                 </li>
                 <li>
                     <strong>2024 - 2024</strong>: Airion Inc. (AI Engineer & Sales Intern)
                 </li>
+                <li>
+                    <strong>2020 - 2021</strong>: Radix Inc. (Currently SAKIYOMI Inc., SNS Operater & Data Analyst)
+                </li>
+                <li>
+                    <strong>2019 - 2021</strong>: Starbucks Japan (Barista)
+                </li>
             </ul>
         </section>
 
+        <!-- Hobbies Section -->
         <section>
             <h2>Hobbies</h2>
-            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px;">
+            <div class="hobby-grid">
                 <!-- Sauna Card -->
-                <div style="background: #ff6f61; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">サウナ</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🧖‍♂️</div>
+                    <h3>Sauna</h3>
                 </div>
 
                 <!-- Shogi Card -->
-                <div style="background: #6a4c93; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">将棋</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">♟️</div>
+                    <h3>Shogi</h3>
                 </div>
 
                 <!-- Triathlon Card -->
-                <div style="background: #4caf50; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">トライアスロン</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🏃‍♂️</div>
+                    <h3>Triathlon</h3>
                 </div>
 
                 <!-- Camping Card -->
-                <div style="background: #ff9800; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">キャンプ</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">⛺</div>
+                    <h3>Camping</h3>
                 </div>
 
                 <!-- Ski/Snowboard Card -->
-                <div style="background: #2196f3; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">スキー・スノーボード</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🏂</div>
+                    <h3>Ski & Snowboard</h3>
                 </div>
 
                 <!-- Mountaineering Card -->
-                <div style="background: #795548; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-                    <h3 style="margin: 0;">登山</h3>
+                <div class="hobby-card">
+                    <div class="hobby-icon">🏔️</div>
+                    <h3>Mountaineering</h3>
+                </div>
+
+                <!-- Tennis Card -->
+                <div class="hobby-card">
+                    <div class="hobby-icon">🎾</div>
+                    <h3>Tennis</h3>
+                </div>
+
+                <!-- Futsal Card -->
+                <div class="hobby-card">
+                    <div class="hobby-icon">⚽</div>
+                    <h3>Futsal</h3>
+                </div>
+
+                <!-- Reading Card -->
+                <div class="hobby-card">
+                    <div class="hobby-icon">📚</div>
+                    <h3>Reading</h3>
                 </div>
             </div>
         </section>
 
-		<!-- Links Section -->
-		<section>
-			<h2>Links</h2>
-			<div style="display: flex; justify-content: center; gap: 20px;">
-				<!-- Github Card -->
-				<a href="https://github.com/RentoYabuki06" target="_blank" style="text-decoration: none;">
-					<div style="background: #24292e; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-						<h3 style="margin: 0;">GitHub</h3>
-					</div>
-				</a>
+        <!-- Travel Section を更新 -->
+        <section>
+            <h2>Travels</h2>
+            <div class="travel-list">
+                <!-- USA Road Trip -->
+                <div class="travel-card">
+                    <div class="travel-icon">🚐</div>
+                    <div class="travel-content">
+                        <h3>Cross-America Road Trip</h3>
+                        <p class="travel-detail">Camper Van / 1 Month</p>
+                    </div>
+                </div>
 
-				<!-- Note Card -->
-				<a href="https://note.com/yabukin_coffee" target="_blank" style="text-decoration: none;">
-					<div style="background: #43b880; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-						<h3 style="margin: 0;">Note</h3>
-					</div>
+                <!-- Shikoku Cycling -->
+                <div class="travel-card">
+                    <div class="travel-icon">🚲</div>
+                    <div class="travel-content">
+                        <h3>Shikoku Circuit</h3>
+                        <p class="travel-detail">Bicycle Camping</p>
+                    </div>
+                </div>
 
-				<!-- Mail Card -->
-				<a href="rento.nky.1203@gmail.com" target="_blank" style="text-decoration: none;">
-					<div style="background: #007acc; color: white; border-radius: 10px; padding: 20px; width: 150px; text-align: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-						<h3 style="margin: 0;">Mail</h3>
-					</div>
-			</a>
-			</div>
-		</section>
-		
+                <!-- Kyushu Trip -->
+                <div class="travel-card">
+                    <div class="travel-icon">🚂</div>
+                    <div class="travel-content">
+                        <h3>Kyushu Tour</h3>
+                        <p class="travel-detail">Seishun 18 Ticket</p>
+                    </div>
+                </div>
+
+                <!-- East Asia Backpacking -->
+                <div class="travel-card">
+                    <div class="travel-icon">🎒</div>
+                    <div class="travel-content">
+                        <h3>Southeast Asia</h3>
+                        <p class="travel-detail">Backpacking</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Links Section -->
+        <section>
+            <h2>Links</h2>
+            <div class="links-container">
+                <!-- Github Link -->
+                <a href="https://github.com/RentoYabuki06" target="_blank" class="link-card github">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" class="icon-svg">
+                            <path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </div>
+                    <span class="link-text">GitHub</span>
+                </a>
+
+                <!-- Note Link -->
+                <a href="https://note.com/yabukin_coffee" target="_blank" class="link-card note">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" class="icon-svg">
+                            <path fill="currentColor" d="M4 4v16h16V4H4zm2 14V6h12v12H6z"/>
+                            <path fill="currentColor" d="M8 8h8v2H8zm0 3h8v2H8zm0 3h5v2H8z"/>
+                        </svg>
+                    </div>
+                    <span class="link-text">Note</span>
+                </a>
+
+                <!-- Mail Link -->
+                <a href="mailto:rento.nky.1203@gmail.com" class="link-card mail">
+                    <div class="link-icon">
+                        <svg viewBox="0 0 24 24" class="icon-svg">
+                            <path fill="currentColor" d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+                        </svg>
+                    </div>
+                    <span class="link-text">Mail</span>
+                </a>
+            </div>
+        </section>
+        
+        <!-- スキルセクションを更新 -->
+        <section>
+            <h2>Skills</h2>
+            <div class="skill-container">
+                <!-- Python -->
+                <div class="skill-item">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="skill-circle" cx="50" cy="50" r="45" 
+                                style="--value: 85" stroke="#007acc"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em">Python</text>
+                    </svg>
+                </div>
+
+                <!-- Next.js -->
+                <div class="skill-item">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="skill-circle" cx="50" cy="50" r="45" 
+                                style="--value: 75" stroke="#000000"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em">Next.js</text>
+                    </svg>
+                </div>
+
+                <!-- TypeScript -->
+                <div class="skill-item">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="skill-circle" cx="50" cy="50" r="45" 
+                                style="--value: 70" stroke="#3178c6"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em">TypeScript</text>
+                    </svg>
+                </div>
+
+                <!-- HTML & CSS -->
+                <div class="skill-item">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="skill-circle" cx="50" cy="50" r="45" 
+                                style="--value: 80" stroke="#e34c26"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em">HTML/CSS</text>
+                    </svg>
+                </div>
+
+                <!-- GitHub -->
+                <div class="skill-item">
+                    <svg viewBox="0 0 100 100">
+                        <circle class="skill-circle" cx="50" cy="50" r="45" 
+                                style="--value: 75" stroke="#24292e"/>
+                        <text x="50" y="50" text-anchor="middle" dy=".3em">GitHub</text>
+                    </svg>
+                </div>
+            </div>
+        </section>
     </main>
     <footer>
         <p>© 2025 Rento Yabuki. All Rights Reserved.</p>
     </footer>
+
+    <script>
+        // ダークモード切り替え
+        function toggleTheme() {
+            document.body.dataset.theme = 
+                document.body.dataset.theme === 'dark' ? 'light' : 'dark';
+        }
+
+        // スクロールアニメーション
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+    <script src="particles.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
